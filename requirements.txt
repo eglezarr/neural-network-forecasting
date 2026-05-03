@@ -1,0 +1,26 @@
+# =============================================================
+# requirements.txt — Dependencias del proyecto
+# =============================================================
+# Instalar con: pip install -r requirements.txt
+#
+# IMPORTANTE: Cada vez que un miembro del equipo instale una
+# nueva librería, debe añadirla aquí y hacer commit.
+# Esto garantiza que todos trabajamos con el mismo entorno.
+# =============================================================
+
+# --- Datos y manipulación ---
+numpy
+pandas
+yfinance
+
+# --- Machine Learning clásico ---
+scikit-learn
+
+# --- Redes Neuronales ---
+tensorflow>=2.15.0
+
+# --- Visualización ---
+matplotlib
+
+# --- Utilidades ---
+tqdm

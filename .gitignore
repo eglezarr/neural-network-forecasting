@@ -1,0 +1,45 @@
+# =============================================================
+# .gitignore — Archivos excluidos del control de versiones
+# =============================================================
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+
+# --- Jupyter Notebooks ---
+.ipynb_checkpoints/
+
+# --- Entornos virtuales ---
+venv/
+env/
+.venv/
+
+# --- IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- Datos (demasiado grandes para GitHub) ---
+data/*.csv
+data/*.parquet
+data/*.pkl
+data/*.h5
+
+# --- Modelos entrenados (pueden ser muy pesados) ---
+models/*.h5
+models/*.keras
+models/*.pkl
+models/*.pt
+
+# --- Sistema operativo ---
+.DS_Store
+Thumbs.db
+
+# --- Variables de entorno ---
+.env
