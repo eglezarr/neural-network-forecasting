@@ -1,4 +1,4 @@
-# Neural Network Forecasting — MIAX B3-T4/T5/T6
+# Neural Network Forecasting
 
 ## Objective
 
