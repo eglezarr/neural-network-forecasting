@@ -158,3 +158,110 @@ def get_train_test(data, input_window, output_window):
     print(f"  X_test:  {X_test.shape}  | y_test:  {y_test.shape}")
 
     return X_train, X_test, y_train, y_test
+
+
+# ============================================================================
+# Función de diferenciación fraccional (pesos)
+# ============================================================================
+
+# La diferenciación fraccional aplica una suma ponderada del pasado:
+#   Δ^d X_t = Σ w_k · X_{t-k}
+#
+# Los pesos w_k se calculan con la fórmula recursiva:
+#   w_0 = 1
+#   w_k = -w_{k-1} · (d - k + 1) / k
+#
+# Propiedades clave:
+#   - Con d=1 → pesos = [1, -1, 0, 0, ...] (diferencia clásica)
+#   - Con d<1 → los pesos NUNCA llegan a 0, decaen gradualmente
+#   - Cuanto menor es d, más lento decaen → más memoria histórica
+
+def get_weights(d, size):
+    """
+    Calcula los pesos de la diferenciación fraccional.
+    d    : orden de diferenciación (float entre 0 y 1)
+    size : número de pesos a calcular (longitud de la ventana)
+    """
+    w = [1.0]  # w_0 = 1 siempre
+    for k in range(1, size):
+        w_k = -w[-1] * (d - k + 1) / k
+        w.append(w_k)
+    return np.array(w)
+
+# ============================================================================
+# Función de diferenciación fraccional
+# ============================================================================
+
+# Para cada punto t, multiplicamos los pesos por los precios
+# del pasado y los sumamos:
+#   Δ^d X_t = w_0·X_t + w_1·X_{t-1} + w_2·X_{t-2} + ...
+#
+# Parámetro thresh: descartamos pesos cuyo valor absoluto sea
+# menor que thresh → evitamos usar un pasado demasiado lejano
+# con pesos casi nulos (optimización computacional)
+
+def frac_diff(series, d, thresh=1e-4):
+    """
+    Aplica diferenciación fraccional a una serie temporal.
+    series : pd.Series con los precios
+    d      : orden de diferenciación (float entre 0 y 1)
+    thresh : umbral para truncar pesos insignificantes
+    """
+    # Calculamos pesos hasta que sean insignificantes
+    pesos = get_weights(d, len(series))
+
+    # Truncamos en el primer peso menor que thresh
+    pesos_truncados = np.where(np.abs(pesos) > thresh)[0]
+    if len(pesos_truncados) == 0:
+        ventana = len(series)
+    else:
+        ventana = pesos_truncados[-1] + 1
+
+    pesos = pesos[:ventana]
+
+    resultado = []
+    # Empezamos desde el índice = ventana para tener suficiente historial
+    for t in range(ventana, len(series)):
+        # Extraemos los últimos 'ventana' precios (en orden inverso)
+        ventana_precios = series.iloc[t - ventana + 1 : t + 1].values[::-1]
+        # Producto escalar pesos · precios
+        valor = np.dot(pesos, ventana_precios)
+        resultado.append(valor)
+
+    # El índice empieza en 'ventana' porque los primeros valores
+    # no tienen suficiente historial para calcular
+    idx = series.index[ventana:]
+    return pd.Series(resultado, index=idx, name=f'frac_diff_d{d}')
+
+# Para encontrar la d óptima se tiene que hacer un test de DF --> ver si la serie es estacionaria con ADF
+
+# Test ADF (Augmented Dickey-Fuller)
+
+# El test ADF mide estadísticamente si una serie es estacionaria.
+#
+# Hipótesis:
+#   H0 (hipótesis nula)      → la serie NO es estacionaria
+#   H1 (hipótesis alternativa) → la serie SÍ es estacionaria
+#
+# Interpretación del p-valor:
+#   p-valor < 0.05 → rechazamos H0 → serie estacionaria
+#   p-valor > 0.05 → no podemos rechazar H0 → no estacionaria
+#
+# Nuestro objetivo: encontrar el MÍNIMO d con p-valor < 0.05
+# → mínima diferenciación que consigue estacionariedad
+
+from statsmodels.tsa.stattools import adfuller
+
+def test_adf(series, nombre=""):
+    """
+    Aplica el test ADF a una serie y devuelve los resultados clave.
+    """
+    resultado = adfuller(series.dropna(), maxlag=1, regression='c', autolag=None)
+    return {
+        'Serie'       : nombre,
+        'ADF Statistic': round(resultado[0], 4),
+        'p-valor'     : round(resultado[1], 4),
+        'Estacionaria': 'SI' if resultado[1] < 0.05 else 'NO'
+    }
+
+
