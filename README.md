@@ -72,9 +72,3 @@ X_train, X_test, y_train, y_test = get_train_test(returns, input_window=30, outp
 ## Metric
 
 **MAE (Mean Absolute Error)** — as specified in the assignment.
-
-## Team
-
-- Member 1: Infrastructure + Dense models
-- Member 2: Recurrent models (LSTM/GRU)
-- Member 3: Convolutional models + Mixed + Final evaluation
