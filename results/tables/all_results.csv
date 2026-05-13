@@ -1,3 +1,0 @@
-model_name,model_type,input_window,output_window,mae_train,mae_val,mae_test,n_params
-LSTM_v1,recurrent,5,1,0.011584,0.009097,0.012322,24023
-LSTM_v1,recurrent,5,1,0.011584,0.009097,0.012322,24023
