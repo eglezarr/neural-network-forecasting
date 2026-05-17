@@ -36,6 +36,7 @@ OUTPUT_WINDOWS = [1, 5, 30, 90]     # Ventanas de salida (días a futuro)
 RANDOM_SEED = 42
 TEST_SIZE = 0.1         # 90% train, 10% test
 START_DATE = '1945-01-01'
+END_DATE = '2026-05-05'  # Fecha de referencia fija para todos los miembros del equipo
 
 # ============================================================================
 # TIPOS DE MODELO — Para estandarizar nombres en resultados y gráficas

@@ -35,7 +35,7 @@ from sklearn.model_selection import train_test_split
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from config import TICKERS, START_DATE, RANDOM_SEED, TEST_SIZE
+from config import TICKERS, START_DATE, END_DATE, RANDOM_SEED, TEST_SIZE
 
 
 # ============================================================================
@@ -51,6 +51,10 @@ def load_data():
         precios_close = yf.download(tickers, start='1945-01-01', auto_adjust=True)['Close']
         returns = np.log(precios_close).diff().dropna()
 
+    Se usa END_DATE fija para garantizar que todos los miembros del equipo
+    trabajen con exactamente los mismos datos independientemente de cuándo
+    ejecuten el código.
+
     Returns
     -------
     returns : pd.DataFrame
@@ -59,6 +63,7 @@ def load_data():
     precios_close = yf.download(
         TICKERS,
         start=START_DATE,
+        end=END_DATE,
         auto_adjust=True,
         progress=True
     )['Close']
