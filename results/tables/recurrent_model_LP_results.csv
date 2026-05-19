@@ -1,0 +1,17 @@
+model_name,model_type,input_window,output_window,mae_train,mae_val,mae_test,n_params
+GRU_deep_LP,recurrent_model_LP,5,1,0.011538,0.011509,0.012349,101655
+GRU_deep_LP,recurrent_model_LP,5,5,0.005347,0.005386,0.005665,101655
+GRU_deep_LP,recurrent_model_LP,5,30,0.002151,0.002194,0.002338,101655
+GRU_deep_LP,recurrent_model_LP,5,90,0.001234,0.001222,0.001284,101655
+GRU_deep_LP,recurrent_model_LP,10,1,0.011547,0.011844,0.012354,101655
+GRU_deep_LP,recurrent_model_LP,10,5,0.005256,0.005369,0.005668,101655
+GRU_deep_LP,recurrent_model_LP,10,30,0.002151,0.002188,0.002344,101655
+GRU_deep_LP,recurrent_model_LP,10,90,0.001231,0.001257,0.001293,101655
+GRU_deep_LP,recurrent_model_LP,30,1,0.011562,0.011746,0.01235,101655
+GRU_deep_LP,recurrent_model_LP,30,5,0.005337,0.005371,0.005646,101655
+GRU_deep_LP,recurrent_model_LP,30,30,0.001755,0.001769,0.002804,101655
+GRU_deep_LP,recurrent_model_LP,30,90,0.001,0.001015,0.00135,101655
+GRU_deep_LP,recurrent_model_LP,90,1,0.011575,0.011517,0.012394,101655
+GRU_deep_LP,recurrent_model_LP,90,5,0.005348,0.005312,0.00565,101655
+GRU_deep_LP,recurrent_model_LP,90,30,0.002156,0.002208,0.002357,101655
+GRU_deep_LP,recurrent_model_LP,90,90,0.000993,0.001004,0.001345,101655
